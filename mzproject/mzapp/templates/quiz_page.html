@@ -5,7 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Quiz Timer</title>
         {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'quiz-page.css' %}" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'quiz-page.css' %}"
+        />
     </head>
     <body>
         <div class="timer-wrapper">
@@ -56,13 +60,13 @@
         {% endif %}
         <script>
             {% if quiz.answer == 1 %}
-                const correctAnswer = document.querySelector('.answer[data-answer="1"]');
+                const correctBtn = document.querySelector('.answer[data-answer="1"]');
             {% elif quiz.answer == 2 %}
-                const correctAnswer = document.querySelector('.answer[data-answer="2"]');
+                const correctBtn = document.querySelector('.answer[data-answer="2"]');
             {% elif quiz.answer == 3 %}
-                const correctAnswer = document.querySelector('.answer[data-answer="3"]');
+                const correctBtn = document.querySelector('.answer[data-answer="3"]');
             {% elif quiz.answer == 4 %}
-                const correctAnswer = document.querySelector('.answer[data-answer="4"]');
+                const correctBtn = document.querySelector('.answer[data-answer="4"]');
             {% endif %}
 
             let timeLeft = 10000;

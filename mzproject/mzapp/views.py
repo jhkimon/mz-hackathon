@@ -40,7 +40,8 @@ def quiz_page(request, id):
 
     if add_gimic:
         gimic = random.choice(gimic_list)
-        gimic_list.insert(2, 'float_img')
+    elif id == 3:
+        gimic = 'float_img'
     # 기믹에 따라 다른 템플릿 선택
     if gimic == 'button_fadeout':
         template_name = 'quiz_page_button_fadeout.html'
