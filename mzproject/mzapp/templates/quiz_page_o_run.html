@@ -98,10 +98,10 @@
 
                 const container = document.querySelector("#container");
                 const answerContainer = document.querySelector(".answer-container");
-                const hideDistance = 300;
+                const hideDistance = 400;
 
                 container.addEventListener("mousemove", (e) => {
-                const answerRect = answerContainer.getBoundingClientRect();
+                const answerRect = correctButton.getBoundingClientRect();
                 const distance = Math.sqrt(
                     Math.pow(e.clientX - (answerRect.left + answerRect.width / 2), 2) +
                     Math.pow(e.clientY - (answerRect.top + answerRect.height / 2), 2)
@@ -113,19 +113,19 @@
                 }
             });
 
-                        // const timerInterval = setInterval(() => {
-                        //     timeLeft -= 10;
-                        //     const percentageLeft = (timeLeft / 10000) * 100;
-                        //     timerBar.style.width = percentageLeft + '%';
-                        //     timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
+                        const timerInterval = setInterval(() => {
+                            timeLeft -= 10;
+                            const percentageLeft = (timeLeft / 10000) * 100;
+                            timerBar.style.width = percentageLeft + '%';
+                            timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
 
-                        //     if (timeLeft <= 0) {
-                        //         clearInterval(timerInterval);
-                        //         timerText.textContent = '0.000초';
-                        //         alert('타이머 종료!');
-                        //         window.location.href = nextUrl || document.querySelector('.answer').href;
-                        //     }
-                        // }, 10);
+                            if (timeLeft <= 0) {
+                                clearInterval(timerInterval);
+                                timerText.textContent = '0.000초';
+                                alert('타이머 종료!');
+                                window.location.href = nextUrl || document.querySelector('.answer').href;
+                            }
+                        }, 10);
         </script>
     </body>
 </html>

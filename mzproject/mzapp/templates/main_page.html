@@ -12,8 +12,15 @@
     </head>
     <body>
         <div class="title-wrapper">
-            <div class="title">MZ 신조어 게임</div>
+            <img src="{% static 'images/banner.png' %}" />
         </div>
-        <a href="{% url 'input_name' %}" class="start">시작하기</a>
+        <div class="start-wrapper">
+            <a href="{% url 'input_name' %}">
+                <img class="start-btn" src="{% static 'images/start-btn.png' %}" />
+            </a>
+            <img class="kid" src="{% static 'images/kid.png' %}" />
+        </div>
+        </a>
     </body>
+</html>
 </html>
