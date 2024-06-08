@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quiz Timer</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'quiz-page.css' %}" />
+        <style>
+            .sweep {
+                position: absolute;
+                left: -400px;
+                top: 300px;
+                width: 300px;
+                transition: left 2.5s;
+            }
+            #container {
+                width: 100vw;
+                height: 100vh;
+            }
+        </style>
+    </head>
+    <body id="container">
+        <div class="timer-wrapper">
+            <div class="timer" id="timer-bar"></div>
+            <div class="timer-text" id="timer-text">10.000초</div>
+        </div>
+        <div class="question">{{ quiz.quiz }}</div>
+        <div class="answer-container">
+            <div class="answer-wrapper">
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="1"
+                >
+                    <div class="answer-num">A</div>
+                    {{ quiz.op1 }}
+                </a>
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="2"
+                >
+                    <div class="answer-num">B</div>
+                    {{ quiz.op2 }}
+                </a>
+            </div>
+            <div class="answer-wrapper">
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="3"
+                >
+                    <div class="answer-num">C</div>
+                    {{ quiz.op3 }}
+                </a>
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="4"
+                >
+                    <div class="answer-num">D</div>
+                    {{ quiz.op4 }}
+                </a>
+            </div>
+        </div>
+        {% if gimic %}
+        <p>{{ gimic }}</p>
+        {% endif %}
+        <script>
+            const container = document.querySelector("#container");
+            const answerContainer = document.querySelector(".answer-container");
+            const answers = document.querySelectorAll('.answer');
+            const hideDistance = 300;
+
+            {% if quiz.answer == 1 %}
+                const correctButton = document.querySelector('.answer[data-answer="1"]');
+            {% elif quiz.answer == 2 %}
+                const correctButton = document.querySelector('.answer[data-answer="2"]');
+            {% elif quiz.answer == 3 %}
+                const correctButton = document.querySelector('.answer[data-answer="3"]');
+            {% elif quiz.answer == 4 %}
+                const correctButton = document.querySelector('.answer[data-answer="4"]');
+            {% endif %}
+            const correctAnswer = {{ quiz.answer }};
+
+            const answerD = document.createElement('a');
+            answerD.classList.add('answer', 'sweep');
+            answerD.href = '{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}';
+            answerD.setAttribute('data-answer', {{ quiz.answer }});
+            answerD.innerHTML = `
+            <div class="answer-num">
+                {% if quiz.answer == 1 %}
+                    {{ quiz.op1 }}
+                {% elif quiz.answer == 2 %}
+                    {{ quiz.op2 }}
+                {% elif quiz.answer == 3 %}
+                    {{ quiz.op3 }}
+                {% elif quiz.answer == 4 %}
+                    {{ quiz.op4 }}
+                {% elif quiz.answer == 5 %}
+                    {{ quiz.op5 }}
+                {% endif %}
+            </div>
+            {% if quiz.answer == 1 %}
+                {{ quiz.op1 }}
+            {% elif quiz.answer == 2 %}
+                {{ quiz.op2 }}
+            {% elif quiz.answer == 3 %}
+                {{ quiz.op3 }}
+            {% elif quiz.answer == 4 %}
+                {{ quiz.op4 }}
+            {% elif quiz.answer == 5 %}
+                {{ quiz.op5 }}
+            {% endif %}
+            `;
+            answerContainer.appendChild(answerD);
+
+            container.addEventListener("mousemove", (e) => {
+                const answerRect = answerContainer.getBoundingClientRect();
+                const distance = Math.sqrt(
+                    Math.pow(e.clientX - (answerRect.left + answerRect.width / 2), 2) +
+                    Math.pow(e.clientY - (answerRect.top + answerRect.height / 2), 2)
+                );
+                if (distance < hideDistance) {
+                    correctButton.style.opacity = 0;
+                    correctButton.style.visibility = 'hidden';
+                } else {
+                    correctButton.style.opacity = 1;
+                    correctButton.style.visibility = 'visible';
+                }
+            });
+
+            let timeLeft = 10000;
+            const timerBar = document.getElementById('timer-bar');
+            const timerText = document.getElementById('timer-text');
+            let nextUrl = "";
+
+            function incrementQCount() {
+                let qCount = localStorage.getItem('q_count');
+                qCount = qCount ? parseInt(qCount) + 1 : 1;
+                localStorage.setItem('q_count', qCount);
+            }
+
+            answers.forEach(answer => {
+                answer.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const selectedAnswer = parseInt(this.getAttribute('data-answer'));
+                    if (selectedAnswer === correctAnswer) {
+                        incrementQCount();
+                    }
+                    nextUrl = this.href;
+                    window.location.href = this.href;
+                });
+            });
+
+            const timerInterval = setInterval(() => {
+                timeLeft -= 10;
+                const percentageLeft = (timeLeft / 10000) * 100;
+                timerBar.style.width = percentageLeft + '%';
+                timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerText.textContent = '0.000초';
+                    alert('타이머 종료!');
+                    window.location.href = nextUrl || document.querySelector('.answer').href;
+                }
+            }, 10);
+            setTimeout(function () {
+                var button = document.querySelector(".sweep");
+                button.style.left = "calc(100vw + 300px)";
+            }, 3000);
+        </script>
+    </body>
+</html>
