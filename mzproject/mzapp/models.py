@@ -10,7 +10,7 @@ class Question(models.Model):
     op5 = models.TextField()  # 보기 5
     
     def __str__(self):
-        return self.text
+        return self.quiz
 
 class User(models.Model):
     name = models.CharField(max_length=255)  # 사용자의 이름
@@ -19,6 +19,14 @@ class User(models.Model):
     correct_count = models.IntegerField()  # 맞춘 문제 개수
     end_time = models.DateTimeField()  # 퀴즈 종료 시간
 
+    def __str__(self):
+        return self.name
+
+
+class Reward(models.Model):
+    name = models.CharField(max_length=255)  # 보상 이름
+    image = models.ImageField(upload_to='images/')  # 보상 이미지
+    
     def __str__(self):
         return self.name
 
