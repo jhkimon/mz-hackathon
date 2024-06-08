@@ -20,7 +20,6 @@ from django.contrib import admin
 from django.urls import path
 from mzapp import views
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main_page, name='main_page'),  # 메인배너 페이지
