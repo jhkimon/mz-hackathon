@@ -12,7 +12,7 @@
                 left: -400px;
                 top: 300px;
                 width: 300px;
-                transition: left 2.5s;
+                transition: left 3.5s;
             }
             #container {
                 width: 100vw;
@@ -135,7 +135,8 @@
                 correctBtn.style.pointerEvents = 'auto';
             });
 
-            let timeLeft = 10000;
+            const answers = document.querySelectorAll('.answer');
+            let timeLeft = 15000;
             const timerBar = document.getElementById('timer-bar');
             const timerText = document.getElementById('timer-text');
             const correctAnswer = {{ quiz.answer }};
@@ -176,7 +177,7 @@
 
             const timerInterval = setInterval(() => {
                 timeLeft -= 10;
-                const percentageLeft = (timeLeft / 10000) * 100;
+                const percentageLeft = (timeLeft / 15000) * 100;
                 timerBar.style.width = percentageLeft + '%';
                 timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
 
@@ -191,7 +192,7 @@
             setTimeout(function () {
                 var button = document.querySelector(".sweep");
                 button.style.left = "calc(100vw + 300px)";
-            }, 3000);
+            }, 4000);
         </script>
     </body>
 </html>

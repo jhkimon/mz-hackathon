@@ -33,7 +33,7 @@
         <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
         <div class="timer-wrapper">
             <div class="timer" id="timer-bar"></div>
-            <div class="timer-text" id="timer-text">10.000초</div>
+            <div class="timer-text" id="timer-text">15.000초</div>
         </div>
         <div class="question">{{ quiz.quiz }}</div>
         <div class="answer-container">
@@ -90,7 +90,7 @@
                 const correctBtn = document.querySelector('.answer[data-answer="4"]');
             {% endif %}
 
-            let timeLeft = 10000;
+            let timeLeft = 15000;
             const timerBar = document.getElementById('timer-bar');
             const timerText = document.getElementById('timer-text');
             let nextUrl = "";
@@ -134,7 +134,7 @@
 
             const timerInterval = setInterval(() => {
                 timeLeft -= 10;
-                const percentageLeft = (timeLeft / 10000) * 100;
+                const percentageLeft = (timeLeft / 15000) * 100;
                 timerBar.style.width = percentageLeft + '%';
                 timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
 
@@ -152,12 +152,12 @@
                 // 1초 후에 이미지에 애니메이션 클래스 추가
                 setTimeout(function () {
                     image.classList.add('float-in');
-                }, 2000);
+                }, 1000);
 
                 // 2초 후에 이미지에 애니메이션 클래스 제거
                 setTimeout(function () {
                     image.classList.remove('float-in');
-                }, 4000);
+                }, 3000);
             });
         </script>
     </body>

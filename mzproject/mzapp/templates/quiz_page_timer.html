@@ -38,8 +38,13 @@
         </div>
         <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
         <div class="timer-wrapper">
+            <<<<<<< HEAD
+            <input type="range" class="timer-slider" id="timer-slider" min="0" max="15000" value="15000" />
+            <div class="timer-text" id="timer-text">15.000초</div>
+            =======
             <input type="range" class="timer-slider" id="timer-slider" min="0" max="7000" value="7000" />
             <div class="timer-text" id="timer-text">7.000초</div>
+            >>>>>>> origin/main
         </div>
         <div class="question">{{ quiz.quiz }}</div>
         <div class="answer-container">
@@ -85,106 +90,110 @@
         {% endif %}
         <script>
 
-            let timeLeft = 7000;
-            const timerText = document.getElementById("timer-text");
-            const timerSlider = document.getElementById("timer-slider");
-            let isDragging = false;
-            let nextUrl = "";
+                        let timeLeft = 7000;
+                        const timerText = document.getElementById("timer-text");
+                        const timerSlider = document.getElementById("timer-slider");
+                        let isDragging = false;
+                        let nextUrl = "";
 
-            const correctAnswer = {{ quiz.answer }};
+                        const correctAnswer = {{ quiz.answer }};
 
-            function incrementQCount() {
-                let qCount = localStorage.getItem('q_count');
-                qCount = qCount ? parseInt(qCount) + 1 : 1;
-                localStorage.setItem('q_count', qCount);
-            }
+                        function incrementQCount() {
+                            let qCount = localStorage.getItem('q_count');
+                            qCount = qCount ? parseInt(qCount) + 1 : 1;
+                            localStorage.setItem('q_count', qCount);
+                        }
 
-            const answers = document.querySelectorAll('.answer');
-            answers.forEach(answer => {
-                answer.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    const selectedAnswer = parseInt(this.getAttribute('data-answer'));
-                    const modal = document.getElementById('feedbackModal');
-                    const modalImg = document.getElementById('feedbackImage');
+                        const answers = document.querySelectorAll('.answer');
+                        answers.forEach(answer => {
+                            answer.addEventListener('click', function (event) {
+                                event.preventDefault();
+                                const selectedAnswer = parseInt(this.getAttribute('data-answer'));
+                                const modal = document.getElementById('feedbackModal');
+                                const modalImg = document.getElementById('feedbackImage');
 
-                    if (selectedAnswer === correctAnswer) {
-                        timeLeft = 7000;
-                        // 정답인 경우 동그라미 이미지 표시
-                        modalImg.src = "{% static 'images/good.png' %}";
-                        incrementQCount();
-                    } else {
-                        timeLeft = 7000;
-                        // 오답인 경우 엑스 이미지 표시
-                        modalImg.src = "{% static 'images/bad.png' %}";
-                    }
+                                if (selectedAnswer === correctAnswer) {
+                                    timeLeft = 7000;
+                                    // 정답인 경우 동그라미 이미지 표시
+                                    modalImg.src = "{% static 'images/good.png' %}";
+                                    incrementQCount();
+                                } else {
+                                    timeLeft = 7000;
+                                    // 오답인 경우 엑스 이미지 표시
+                                    modalImg.src = "{% static 'images/bad.png' %}";
+                                }
 
-                    // 모달 표시
-                    modal.style.display = "block";
-                    nextUrl = this.href;
+                                // 모달 표시
+                                modal.style.display = "block";
+                                nextUrl = this.href;
 
-                    setTimeout(() => {
-                        modal.style.display = "none";
-                        window.location.href = nextUrl;
-                    }, 2000);
-                });
-            });
+                                setTimeout(() => {
+                                    modal.style.display = "none";
+                                    window.location.href = nextUrl;
+                                }, 2000);
+                            });
+                        });
 
-            function updateTimerDisplay() {
-                timerText.textContent = (timeLeft / 1000).toFixed(3) + "초";
-                timerSlider.value = timeLeft;
-            }
+                        function updateTimerDisplay() {
+                            timerText.textContent = (timeLeft / 1000).toFixed(3) + "초";
+                            timerSlider.value = timeLeft;
+                        }
 
-            function updateTimeLeft(value) {
-                timeLeft = value;
-                updateTimerDisplay();
-            }
+                        function updateTimeLeft(value) {
+                            timeLeft = value;
+                            updateTimerDisplay();
+                        }
 
-            const timerInterval = setInterval(() => {
-                timeLeft -= 10;
-                const percentageLeft = (timeLeft / 7000) * 100;
-                timerSlider.value = timeLeft;
-                timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
+                        const timerInterval = setInterval(() => {
+                            timeLeft -= 10;
+                            const percentageLeft = (timeLeft / 7000) * 100;
+                            timerSlider.value = timeLeft;
+                            timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
 
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    timerText.textContent = '0.000초';
-                    alert('타이머 종료!');
-                    const modal = document.getElementById('feedbackModal');
-                    const modalImg = document.getElementById('feedbackImage');
+                            if (timeLeft <= 0) {
+                                clearInterval(timerInterval);
+                                timerText.textContent = '0.000초';
+                                alert('타이머 종료!');
+                                const modal = document.getElementById('feedbackModal');
+                                const modalImg = document.getElementById('feedbackImage');
 
-                    // 타이머 종료 시 엑스 이미지 표시
-                    modalImg.src = "{% static 'images/bad.png' %}";
+                                // 타이머 종료 시 엑스 이미지 표시
+                                modalImg.src = "{% static 'images/bad.png' %}";
 
-                    // 모달 표시
-                    modal.style.display = "block";
+                                // 모달 표시
+                                modal.style.display = "block";
 
-                    setTimeout(() => {
-                        modal.style.display = "none";
-                        window.location.href = nextUrl || document.querySelector('.answer').href;
-                    }, 2000);
-                }
-            }, 10);
+                                setTimeout(() => {
+                                    modal.style.display = "none";
+                                    window.location.href = nextUrl || document.querySelector('.answer').href;
+                                }, 2000);
+                            }
+                        }, 10);
 
-            timerSlider.addEventListener("mousedown", () => {
-                isDragging = true;
-                document.addEventListener("mousemove", onMouseMove);
-                document.addEventListener("mouseup", onMouseUp);
-            });
+                        timerSlider.addEventListener("mousedown", () => {
+                            isDragging = true;
+                            document.addEventListener("mousemove", onMouseMove);
+                            document.addEventListener("mouseup", onMouseUp);
+                        });
 
-            function onMouseMove(e) {
-                const rect = timerSlider.getBoundingClientRect();
-                const offsetX = e.clientX - rect.left;
-                const percentage = Math.max(0, Math.min(1, offsetX / rect.width));
-                updateTimeLeft(percentage * 7000);
-            }
+                        function onMouseMove(e) {
+                            const rect = timerSlider.getBoundingClientRect();
+                            const offsetX = e.clientX - rect.left;
+                            const percentage = Math.max(0, Math.min(1, offsetX / rect.width));
+            <<<<<<< HEAD
+                            updateTimeLeft(percentage * 15000);
+            =======
+                            updateTimeLeft(percentage * 7000);
+            >>>>>>> origin/main
+                        }
 
-            function onMouseUp() {
-                isDragging = false;
-                document.removeEventListener("mousemove", onMouseMove);
-                document.removeEventListener("mouseup", onMouseUp);
-            }
+                        function onMouseUp() {
+                            isDragging = false;
+                            document.removeEventListener("mousemove", onMouseMove);
+                            document.removeEventListener("mouseup", onMouseUp);
+                        }
 
-            updateTimerDisplay();
+                        updateTimerDisplay();
         </script>
     </body>
 </html>
