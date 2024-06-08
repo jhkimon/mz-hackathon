@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quiz Timer</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'quiz-page.css' %}" />
+    </head>
+    <body>
+        <div class="timer-wrapper">
+            <div class="timer" id="timer-bar"></div>
+            <div class="timer-text" id="timer-text">10.000초</div>
+        </div>
+        <div class="question">{{ quiz.quiz }}</div>
+        <div class="answer-container">
+            <div class="answer-wrapper">
+                <div class="answer" data-answer="1">
+                    <div class="answer-num">A</div>
+                    {{ quiz.op1 }}
+                </div>
+                <div class="answer" data-answer="2">
+                    <div class="answer-num">B</div>
+                    {{ quiz.op2 }}
+                </div>
+            </div>
+            <div class="answer-wrapper">
+                <div class="answer" data-answer="3">
+                    <div class="answer-num">C</div>
+                    {{ quiz.op3 }}
+                </div>
+                <div class="answer" data-answer="4">
+                    <div class="answer-num">D</div>
+                    {{ quiz.op4 }}
+                </div>
+            </div>
+        </div>
+        {% if gimic %}
+        <p>{{ gimic }}</p>
+        {% endif %} {% if next_quiz_id %}
+        <a class="next-question" id="next-question" href="{% url 'quiz_page' next_quiz_id %}">
+            <div class="next-question-button">다음 질문</div>
+        </a>
+        {% endif %}
+        <script>
+            let timeLeft = 10000;
+            const timerBar = document.getElementById('timer-bar');
+            const timerText = document.getElementById('timer-text');
+
+            const correctAnswer = {{ quiz.answer }};  // The index of the correct answer
+
+            function incrementQCount() {
+                let qCount = localStorage.getItem('q_count');
+                qCount = qCount ? parseInt(qCount) + 1 : 1;
+                localStorage.setItem('q_count', qCount);
+            }
+
+            const answers = document.querySelectorAll('.answer');
+            answers.forEach((answer) => {
+                answer.addEventListener('click', function () {
+                    const selectedAnswer = parseInt(this.getAttribute('data-answer'));
+                    if (selectedAnswer === correctAnswer) {
+                        incrementQCount();
+                    }
+                    const nextQuestionLink = document.getElementById('next-question');
+                    window.location.href = nextQuestionLink.href;
+                });
+            });
+
+            const nextQuestionButton = document.getElementById('next-question');
+            nextQuestionButton.addEventListener('click', function (event) {
+                event.preventDefault();
+                const nextQuestionLink = document.getElementById('next-question');
+                window.location.href = nextQuestionLink.href;
+            });
+
+            const timerInterval = setInterval(() => {
+                timeLeft -= 10;
+                const percentageLeft = (timeLeft / 10000) * 100;
+                timerBar.style.width = percentageLeft + '%';
+                timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerText.textContent = '0.000초';
+                    alert('타이머 종료!');
+                }
+            }, 10);
+        </script>
+    </body>
+</html>
