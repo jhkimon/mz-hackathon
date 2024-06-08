@@ -14,23 +14,6 @@
             </div>
             <input type="text" id="name" name="name" required />
             <button type="button" id="submitBtn">다음</button>
-            <script>
-                window.onload = function () {
-                    localStorage.removeItem('q_count');
-                };
-                const nameInput = document.getElementById('name'); // 수정된 부분: 클래스명이 아닌 id를 사용
-                const submitBtn = document.getElementById('submitBtn');
-
-                function setUsername() {
-                    const name = nameInput.value;
-                    if (name) {
-                        window.localStorage.setItem('username', name);
-                        window.location.href = '/quiz/1';
-                    }
-                }
-
-                submitBtn.addEventListener('click', setUsername);
-            </script>
         </div>
     </body>
 </html>
