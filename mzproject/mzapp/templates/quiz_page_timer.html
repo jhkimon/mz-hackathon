@@ -6,7 +6,29 @@
         <title>Quiz Timer</title>
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'quiz-page.css' %}" />
-        <style></style>
+        <style>
+            .timer-wrapper {
+                width: 80%;
+                height: 20px;
+            }
+            .timer-slider {
+                width: 100%;
+                appearance: none; /* removes browser-specific styling */
+                height: 25px; /* height of slider */
+                background: #ff5c35; /* orange background */
+                outline: none; /* remove outline */
+                border-radius: 50px; /* round corners */
+            }
+
+            .timer-slider::-webkit-slider-thumb {
+                appearance: none; /* removes browser-specific styling */
+                width: 20px; /* handle width */
+                height: 20px; /* handle height */
+                border-radius: 50%; /* make it circular */
+                background: #ffffff; /* white color */
+                cursor: pointer; /* cursor on hover */
+            }
+        </style>
     </head>
     <body>
         <div id="feedbackModal" class="modal" style="display: none">

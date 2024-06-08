@@ -5,19 +5,26 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Quiz Timer</title>
         {% load static %}
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="{% static 'quiz-page.css' %}"
-        />
+        <link rel="stylesheet" type="text/css" href="{% static 'quiz-page.css' %}" />
+        <style>
+            /* 이미지 스타일 */
+            .floating-image {
+                position: absolute;
+                bottom: -1000px; /* 시작 위치: 아래쪽 바깥 */
+                left: 50%; /* 가로 중앙 정렬 */
+                transform: translateX(-50%); /* 가로 중앙 정렬 보정 */
+                width: 500px; /* 이미지 너비 설정 */
+                height: auto; /* 이미지 높이는 자동으로 설정 (비율 유지) */
+                transition: bottom 1s ease-in-out; /* 애니메이션 효과 */
+            }
+
+            /* 이미지가 위로 튀어나오는 클래스 */
+            .float-in {
+                bottom: 10px; /* 화면 안으로 들어오는 위치 */
+            }
+        </style>
     </head>
     <body>
-        <div id="feedbackModal" class="modal" style="display: none">
-            <div class="modal-content">
-                <img id="feedbackImage" src="" alt="Feedback" />
-            </div>
-        </div>
-        <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
         <div class="timer-wrapper">
             <div class="timer" id="timer-bar"></div>
             <div class="timer-text" id="timer-text">10.000초</div>
@@ -25,41 +32,43 @@
         <div class="question">{{ quiz.quiz }}</div>
         <div class="answer-container">
             <div class="answer-wrapper">
-                <a
-                    class="answer"
-                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
-                    data-answer="1"
-                >
-                    <div class="answer-num">A</div>
-                    {{ quiz.op1 }}
-                </a>
-                <a
-                    class="answer"
-                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
-                    data-answer="2"
-                >
-                    <div class="answer-num">B</div>
-                    {{ quiz.op2 }}
-                </a>
+            <a
+                class="answer"
+                href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                data-answer="1"
+            >
+                <div class="answer-num">A</div>
+                {{ quiz.op1 }}
+            </a>
+            <a
+                class="answer"
+                href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                data-answer="2"
+            >
+                <div class="answer-num">B</div>
+                {{ quiz.op2 }}
+            </a>
             </div>
             <div class="answer-wrapper">
-                <a
-                    class="answer"
-                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
-                    data-answer="3"
-                >
-                    <div class="answer-num">C</div>
-                    {{ quiz.op3 }}
-                </a>
-                <a
-                    class="answer"
-                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
-                    data-answer="4"
-                >
-                    <div class="answer-num">D</div>
-                    {{ quiz.op4 }}
-                </a>
+            <a
+                class="answer"
+                href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                data-answer="3"
+            >
+                <div class="answer-num">C</div>
+                {{ quiz.op3 }}
+            </a>
+            <a
+                class="answer"
+                href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                data-answer="4"
+            >
+                <div class="answer-num">D</div>
+                {{ quiz.op4 }}
+            </a>
             </div>
+            <img class="floating-image" src="{% static 'images/king_2.png' %}" alt="Floating Image" />
+        </div>
         </div>
         {% if gimic %}
         <p>{{ gimic }}</p>
@@ -93,26 +102,11 @@
                 answer.addEventListener('click', function (event) {
                     event.preventDefault();
                     const selectedAnswer = parseInt(this.getAttribute('data-answer'));
-                    const modal = document.getElementById('feedbackModal');
-                    const modalImg = document.getElementById('feedbackImage');
-
                     if (selectedAnswer === correctAnswer) {
-                        // 정답인 경우 동그라미 이미지 표시
-                        modalImg.src = "{% static 'images/good.png' %}";
                         incrementQCount();
-                    } else {
-                        // 오답인 경우 엑스 이미지 표시
-                        modalImg.src = "{% static 'images/bad.png' %}";
                     }
-
-                    // 모달 표시
-                    modal.style.display = "block";
                     nextUrl = this.href;
-
-                    setTimeout(() => {
-                        modal.style.display = "none";
-                        window.location.href = nextUrl;
-                    }, 2000);
+                    window.location.href = this.href;
                 });
             });
 
@@ -129,6 +123,20 @@
                     window.location.href = nextUrl || document.querySelector('.answer').href;
                 }
             }, 10);
+            // JavaScript를 사용하여 효과 적용
+            document.addEventListener('DOMContentLoaded', function () {
+                var image = document.querySelector('.floating-image');
+
+                // 1초 후에 이미지에 애니메이션 클래스 추가
+                setTimeout(function () {
+                    image.classList.add('float-in');
+                }, 2000);
+
+                // 2초 후에 이미지에 애니메이션 클래스 제거
+                setTimeout(function () {
+                    image.classList.remove('float-in');
+                }, 4000);
+            });
         </script>
     </body>
 </html>
