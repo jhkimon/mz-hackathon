@@ -108,10 +108,12 @@
                     const modalImg = document.getElementById('feedbackImage');
 
                     if (selectedAnswer === correctAnswer) {
+                        timeLeft = 7000;
                         // 정답인 경우 동그라미 이미지 표시
                         modalImg.src = "{% static 'images/good.png' %}";
                         incrementQCount();
                     } else {
+                        timeLeft = 7000;
                         // 오답인 경우 엑스 이미지 표시
                         modalImg.src = "{% static 'images/bad.png' %}";
                     }

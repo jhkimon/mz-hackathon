@@ -148,6 +148,7 @@
             }
                 answers.forEach(answer => {
                 answer.addEventListener('click', function (event) {
+                    timeLeft = 10000;
                     event.preventDefault();
                     const selectedAnswer = parseInt(this.getAttribute('data-answer'));
                     const modal = document.getElementById('feedbackModal');
