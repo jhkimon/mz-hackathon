@@ -38,8 +38,8 @@
         </div>
         <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
         <div class="timer-wrapper">
-            <input type="range" class="timer-slider" id="timer-slider" min="0" max="10000" value="10000" />
-            <div class="timer-text" id="timer-text">10.000초</div>
+            <input type="range" class="timer-slider" id="timer-slider" min="0" max="15000" value="15000" />
+            <div class="timer-text" id="timer-text">15.000초</div>
         </div>
         <div class="question">{{ quiz.quiz }}</div>
         <div class="answer-container">
@@ -85,7 +85,7 @@
         {% endif %}
         <script>
 
-            let timeLeft = 10000;
+            let timeLeft = 15000;
             const timerText = document.getElementById("timer-text");
             const timerSlider = document.getElementById("timer-slider");
             let isDragging = false;
@@ -144,7 +144,7 @@
                 const rect = timerSlider.getBoundingClientRect();
                 const offsetX = e.clientX - rect.left;
                 const percentage = Math.max(0, Math.min(1, offsetX / rect.width));
-                updateTimeLeft(percentage * 10000);
+                updateTimeLeft(percentage * 15000);
             }
 
             function onMouseUp() {

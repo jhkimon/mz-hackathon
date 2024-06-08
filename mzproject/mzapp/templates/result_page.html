@@ -1,5 +1,5 @@
 {% load static %}
-
+<link rel="stylesheet" type="text/css" href="{% static 'result-page.css' %}" />
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,19 +9,24 @@
     </head>
     <body>
         <div class="container">
+            <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
             <h1>퀴즈 결과</h1>
             <div class="result-image">
-                {% if q_count >= 9 %}
+                ƒ {% if q_count >= 9 %}
                 <img src="{% static '/images/result1.png' %}" alt="첫 번째 이미지" />
                 {% elif q_count >= 6 %}
                 <img src="{% static '/images/result2.png' %}" alt="두 번째 이미지" />
                 {% else %}
                 <img src="{% static '/images/result3.png' %}" alt="세 번째 이미지" />
-
                 {% endif %}
             </div>
             <div class="result">
                 <p id="resultText"></p>
+            </div>
+            <div class="buttonContainer">
+                <button type="button" id="restartBtn">
+                    <img src="{% static 'images/restart_button.png' %}" alt="다시 시작" />
+                </button>
             </div>
         </div>
         <script>
@@ -31,7 +36,11 @@
                 const q_count = localStorage.getItem('q_count');
 
                 // 가져온 정보를 HTML에 적용
-                document.getElementById('resultText').innerText = `${name} 님, ${q_count} 개 맞추셨습니다 !`;
+                document.getElementById('resultText').innerText = `${name}, 너가 맞춘 개수 ${q_count} 개야~ `;
+
+                document.getElementById('restartBtn').addEventListener('click', function () {
+                    window.location.href = '/input-name/';
+                });
             };
         </script>
     </body>

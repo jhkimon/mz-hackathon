@@ -15,7 +15,7 @@
         </div>
         <div class="timer-wrapper">
             <div class="timer" id="timer-bar"></div>
-            <div class="timer-text" id="timer-text">10.000초</div>
+            <div class="timer-text" id="timer-text">15.000초</div>
         </div>
         <div class="question">{{ quiz.quiz }}</div>
         <div class="answer-container">
@@ -74,6 +74,34 @@
             const answerButtonId = `answer-${answer}`;
             const answerButton = document.getElementById(answerButtonId);
 
+            const answers = document.querySelectorAll('.answer');
+            answers.forEach(answer => {
+                answer.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const selectedAnswer = parseInt(this.getAttribute('data-answer'));
+                    const modal = document.getElementById('feedbackModal');
+                    const modalImg = document.getElementById('feedbackImage');
+
+                    if (selectedAnswer === correctAnswer) {
+                        // 정답인 경우 동그라미 이미지 표시
+                        modalImg.src = "{% static 'images/good.png' %}";
+                        incrementQCount();
+                    } else {
+                        // 오답인 경우 엑스 이미지 표시
+                        modalImg.src = "{% static 'images/bad.png' %}";
+                    }
+
+                    // 모달 표시
+                    modal.style.display = "block";
+                    nextUrl = this.href;
+
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                        window.location.href = nextUrl;
+                    }, 2000);
+                });
+            });
+
             const otherButtons = Array.from(document.querySelectorAll('.answer')).filter(
                 (btn) => btn.getAttribute('data-answer') !== answer.toString()
             );
@@ -94,6 +122,21 @@
                     randomButton.style.transition = 'all 0.3s ease';
                 });
             }, 2000); // 2초 후에 실행합니다.
+            let timeLeft = 15000;
+
+            const timerInterval = setInterval(() => {
+                timeLeft -= 10;
+                const percentageLeft = (timeLeft / 10000) * 100;
+                timerBar.style.width = percentageLeft + '%';
+                timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerText.textContent = '0.000초';
+                    alert('타이머 종료!');
+                    window.location.href = nextUrl || document.querySelector('.answer').href;
+                }
+            }, 10);
         </script>
     </body>
 </html>

@@ -12,7 +12,7 @@
                 left: -400px;
                 top: 300px;
                 width: 300px;
-                transition: left 2.5s;
+                transition: left 3.5s;
             }
             #container {
                 width: 100vw;
@@ -77,7 +77,6 @@
 
             const container = document.querySelector("#container");
             const answerContainer = document.querySelector(".answer-container");
-            const answers = document.querySelectorAll('.answer');
             const hideDistance = 300;
 
 
@@ -124,22 +123,19 @@
             `;
             answerContainer.appendChild(answerD);
 
-            container.addEventListener("mousemove", (e) => {
-                const answerRect = answerContainer.getBoundingClientRect();
-                const distance = Math.sqrt(
-                    Math.pow(e.clientX - (answerRect.left + answerRect.width / 2), 2) +
-                    Math.pow(e.clientY - (answerRect.top + answerRect.height / 2), 2)
-                );
-                if (distance < hideDistance) {
-                    correctBtn.style.opacity = 0;
-                    correctBtn.style.visibility = 'hidden';
-                } else {
-                    correctBtn.style.opacity = 1;
-                    correctBtn.style.visibility = 'visible';
-                }
+            correctBtn.addEventListener('focus', function () {
+                console.log('mouseover');
+                correctBtn.style.opacity = 0;
+                correctBtn.style.pointerEvents = 'none';
+            });
+            correctBtn.addEventListener('blur', function () {
+                console.log('mouseout');
+                correctBtn.style.opacity = 1;
+                correctBtn.style.pointerEvents = 'auto';
             });
 
-            let timeLeft = 10000;
+            const answers = document.querySelectorAll('.answer');
+            let timeLeft = 15000;
             const timerBar = document.getElementById('timer-bar');
             const timerText = document.getElementById('timer-text');
             const correctAnswer = {{ quiz.answer }};
@@ -155,17 +151,32 @@
                 answer.addEventListener('click', function (event) {
                     event.preventDefault();
                     const selectedAnswer = parseInt(this.getAttribute('data-answer'));
+                    const modal = document.getElementById('feedbackModal');
+                    const modalImg = document.getElementById('feedbackImage');
+
                     if (selectedAnswer === correctAnswer) {
+                        // 정답인 경우 동그라미 이미지 표시
+                        modalImg.src = "{% static 'images/good.png' %}";
                         incrementQCount();
+                    } else {
+                        // 오답인 경우 엑스 이미지 표시
+                        modalImg.src = "{% static 'images/bad.png' %}";
                     }
+
+                    // 모달 표시
+                    modal.style.display = "block";
                     nextUrl = this.href;
-                    window.location.href = this.href;
+
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                        window.location.href = nextUrl;
+                    }, 2000);
                 });
             });
 
             const timerInterval = setInterval(() => {
                 timeLeft -= 10;
-                const percentageLeft = (timeLeft / 10000) * 100;
+                const percentageLeft = (timeLeft / 15000) * 100;
                 timerBar.style.width = percentageLeft + '%';
                 timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
 
@@ -180,7 +191,7 @@
             setTimeout(function () {
                 var button = document.querySelector(".sweep");
                 button.style.left = "calc(100vw + 300px)";
-            }, 3000);
+            }, 4000);
         </script>
     </body>
 </html>
