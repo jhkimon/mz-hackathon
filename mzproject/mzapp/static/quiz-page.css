@@ -14,12 +14,19 @@ a {
     color: black;
 }
 
+.quiz-banner {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
 /* Timer */
 .timer-wrapper {
     width: 80%;
     height: 30px;
     background-color: #ddd;
     margin-bottom: 20px;
+    margin-top: 50px;
     position: relative;
     border-radius: 50px;
 }
