@@ -1,0 +1,28 @@
+body {
+    margin: 0%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.title-wrapper {
+    width: 80%;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    font-size: 5rem;
+}
+
+button {
+    background: inherit;
+    border: none;
+    width: 60%;
+    height: 20%;
+    font-size: 3rem;
+    cursor: pointer;
+}
