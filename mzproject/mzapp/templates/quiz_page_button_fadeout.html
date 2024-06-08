@@ -5,7 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Quiz Timer</title>
         {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'quiz-page.css' %}" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'quiz-page.css' %}"
+        />
         <style>
             .sweep {
                 position: absolute;
@@ -17,6 +21,9 @@
             #container {
                 width: 100vw;
                 height: 100vh;
+            }
+            .answer {
+                transition: opacity 0.3s ease;
             }
         </style>
     </head>
@@ -100,9 +107,6 @@
                     {{ quiz.op3 }}
                 {% elif quiz.answer == 4 %}
                     {{ quiz.op4 }}
-                {% elif quiz.answer == 5 %}
-                    {{ quiz.op5 }}
-                {% endif %}
             </div>
             {% if quiz.answer == 1 %}
                 {{ quiz.op1 }}
@@ -112,12 +116,19 @@
                 {{ quiz.op3 }}
             {% elif quiz.answer == 4 %}
                 {{ quiz.op4 }}
-            {% elif quiz.answer == 5 %}
-                {{ quiz.op5 }}
-            {% endif %}
             `;
             answerContainer.appendChild(answerD);
 
+            correctBtn.addEventListener('focus', function () {
+                console.log('mouseover');
+                correctBtn.style.opacity = 0;
+                correctBtn.style.pointerEvents = 'none';
+            });
+            correctBtn.addEventListener('blur', function () {
+                console.log('mouseout');
+                correctBtn.style.opacity = 1;
+                correctBtn.style.pointerEvents = 'auto';
+            });
             container.addEventListener("mousemove", (e) => {
                 const answerRect = answerContainer.getBoundingClientRect();
                 const distance = Math.sqrt(
@@ -157,19 +168,19 @@
                 });
             });
 
-            const timerInterval = setInterval(() => {
-                timeLeft -= 10;
-                const percentageLeft = (timeLeft / 10000) * 100;
-                timerBar.style.width = percentageLeft + '%';
-                timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
-
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    timerText.textContent = '0.000초';
-                    alert('타이머 종료!');
-                    window.location.href = nextUrl || document.querySelector('.answer').href;
-                }
-            }, 10);
+            //const timerInterval = setInterval(() => {
+            //    timeLeft -= 10;
+            //    const percentageLeft = (timeLeft / 10000) * 100;
+            //    timerBar.style.width = percentageLeft + '%';
+            //    timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
+            //
+            //    if (timeLeft <= 0) {
+            //        clearInterval(timerInterval);
+            //        timerText.textContent = '0.000초';
+            //        alert('타이머 종료!');
+            //        window.location.href = nextUrl || document.querySelector('.answer').href;
+            //    }
+            //}, 10);
 
             setTimeout(function () {
                 var button = document.querySelector(".sweep");
