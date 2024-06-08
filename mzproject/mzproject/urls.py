@@ -20,8 +20,8 @@ from mzapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.main_page, name='main_page'),  # 메인배너 페이지
+    # path('', views.main_page, name='main_page'),  # 메인배너 페이지
     path('input-name/', views.input_name, name='input_name'),  # 이름입력 페이지
-    path('quiz/<int: id>', views.quiz_page, name='quiz_page'),  # 퀴즈 페이지
-    path('result/', views.result_page, name='result_page'),  # 결과 확인 페이지
+    # path('quiz/<int: id>', views.quiz_page, name='quiz_page'),  # 퀴즈 페이지
+    # path('result/', views.result_page, name='result_page'),  # 결과 확인 페이지
 ]
