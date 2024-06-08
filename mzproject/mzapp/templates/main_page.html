@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MZ 신조어 만들기</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'main-page.css' %}" />
+    </head>
+    <body>
+        <div class="title-wrapper">
+            <img src="{% static 'images/banner.png' %}" />
+        </div>
+        <div class="start-wrapper">
+            <a href="{% url 'input_name' %}">
+                <img class="start-btn" src="{% static 'images/start-btn.png' %}" />
+            </a>
+            <img class="kid" src="{% static 'images/kid.png' %}" />
+        </div>
+    </body>
+</html>
+</html>

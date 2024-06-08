@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quiz Timer</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'quiz-page.css' %}" />
+    </head>
+    <body>
+        <div id="feedbackModal" class="modal" style="display: none">
+            <div class="modal-content">
+                <img id="feedbackImage" src="" alt="Feedback" />
+            </div>
+        </div>
+        <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
+        <div class="timer-wrapper">
+            <div class="timer" id="timer-bar"></div>
+            <div class="timer-text" id="timer-text">15.000초</div>
+        </div>
+        <div class="question">{{ quiz.quiz }}</div>
+        <div class="answer-container">
+            <div class="answer-wrapper">
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="1"
+                >
+                    <div class="answer-num">A</div>
+                    {{ quiz.op1 }}
+                </a>
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="2"
+                >
+                    <div class="answer-num">B</div>
+                    {{ quiz.op2 }}
+                </a>
+            </div>
+            <div class="answer-wrapper">
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="3"
+                >
+                    <div class="answer-num">C</div>
+                    {{ quiz.op3 }}
+                </a>
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="4"
+                >
+                    <div class="answer-num">D</div>
+                    {{ quiz.op4 }}
+                </a>
+            </div>
+        </div>
+
+        <script>
+            {% if quiz.answer == 1 %}
+                const correctButton = document.querySelector('.answer[data-answer="1"]');
+            {% elif quiz.answer == 2 %}
+                const correctButton = document.querySelector('.answer[data-answer="2"]');
+            {% elif quiz.answer == 3 %}
+                const correctButton = document.querySelector('.answer[data-answer="3"]');
+            {% elif quiz.answer == 4 %}
+                const correctButton = document.querySelector('.answer[data-answer="4"]');
+            {% endif %}
+            const correctAnswer = {{quiz.answer}};
+
+            function incrementQCount() {
+                let qCount = localStorage.getItem('q_count');
+                qCount = qCount ? parseInt(qCount) + 1 : 1;
+                localStorage.setItem('q_count', qCount);
+            }
+
+            const answers = document.querySelectorAll('.answer');
+            answers.forEach(answer => {
+                answer.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const selectedAnswer = parseInt(this.getAttribute('data-answer'));
+                    const modal = document.getElementById('feedbackModal');
+                    const modalImg = document.getElementById('feedbackImage');
+
+                    if (selectedAnswer === correctAnswer) {
+                        // 정답인 경우 동그라미 이미지 표시
+                        modalImg.src = "{% static 'images/good.png' %}";
+                        incrementQCount();
+                    } else {
+                        // 오답인 경우 엑스 이미지 표시
+                        modalImg.src = "{% static 'images/bad.png' %}";
+                    }
+
+                    // 모달 표시
+                    modal.style.display = "block";
+                    const nextUrl = this.href;
+
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                        window.location.href = nextUrl;
+                    }, 2000);
+                });
+            });
+
+            const otherButtons = Array.from(document.querySelectorAll('.answer')).filter(
+                (btn) => btn.getAttribute('data-answer') !== correctAnswer.toString()
+            );
+
+            setTimeout(() => {
+                const randomButton = otherButtons[Math.floor(Math.random() * otherButtons.length)];
+
+                // Set explicit width and height before changing position
+                const computedStyle = window.getComputedStyle(randomButton);
+                randomButton.style.width = computedStyle.width;
+                randomButton.style.height = computedStyle.height;
+
+                document.addEventListener('mousemove', function (e) {
+                    const mouseX = e.clientX;
+                    const mouseY = e.clientY;
+
+                    const buttonWidth = randomButton.offsetWidth;
+                    const buttonHeight = randomButton.offsetHeight;
+
+                    randomButton.style.position = 'absolute';
+                    randomButton.style.zIndex=999;
+                    randomButton.style.left = `${mouseX - buttonWidth / 2}px`;
+                    randomButton.style.top = `${mouseY - buttonHeight / 2}px`;
+                    randomButton.style.transition = 'all 0.3s ease';
+                });
+            }, 1000);
+
+            let timeLeft = 15000;
+            const timerBar = document.getElementById('timer-bar');
+            const timerText = document.getElementById('timer-text');
+
+            const timerInterval = setInterval(() => {
+                timeLeft -= 10;
+                const percentageLeft = (timeLeft / 15000) * 100;
+                timerBar.style.width = percentageLeft + '%';
+                timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerText.textContent = '0.000초';
+                    alert('타이머 종료!');
+                    window.location.href = document.querySelector('.answer').href;
+                }
+            }, 10);
+        </script>
+    </body>
+</html>

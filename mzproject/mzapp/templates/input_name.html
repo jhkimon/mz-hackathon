@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'input-name.css' %}" />
+        <title>user_name</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="people">지금까지 38명이 플레이했습니다.</div>
+            <img src="{% static 'images/what-is-your-name.png' %}" />
+            <input type="text" id="name" name="name" required />
+            <button type="button" id="submitBtn">
+                <img src="{% static 'images/my-name.png' %}" />
+            </button>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                localStorage.setItem('q_count', 0);
+
+                const nameInput = document.getElementById('name');
+                const submitBtn = document.getElementById('submitBtn');
+
+                function setUsername() {
+                    const name = nameInput.value;
+                    if (name) {
+                        localStorage.setItem('username', name);
+                        window.location.href = '/description';
+                    } else {
+                        alert('이름을 입력해주세요.');
+                    }
+                }
+
+                submitBtn.addEventListener('click', setUsername);
+            });
+        </script>
+    </body>
+</html>
