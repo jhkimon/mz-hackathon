@@ -76,6 +76,7 @@
             answers.forEach(answer => {
                 answer.addEventListener('click', function (event) {
                     event.preventDefault();
+                    timeLeft = 10000;
                     const selectedAnswer = parseInt(this.getAttribute('data-answer'));
                     const modal = document.getElementById('feedbackModal');
                     const modalImg = document.getElementById('feedbackImage');

@@ -50,6 +50,13 @@ a {
     max-height: 100%;
     object-fit: contain;
 }
+
+.modal-content img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* 이미지가 컨테이너 안에 맞게 조정됨 */
+}
+
 /* Timer */
 .timer-wrapper {
     width: 80%;

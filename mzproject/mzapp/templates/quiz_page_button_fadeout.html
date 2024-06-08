@@ -122,6 +122,7 @@
             {% endif %}
             `;
             answerContainer.appendChild(answerD);
+            const answers = document.querySelectorAll('.answer');
 
             correctBtn.addEventListener('focus', function () {
                 console.log('mouseover');
@@ -146,9 +147,9 @@
                 qCount = qCount ? parseInt(qCount) + 1 : 1;
                 localStorage.setItem('q_count', qCount);
             }
-
-            answers.forEach(answer => {
+                answers.forEach(answer => {
                 answer.addEventListener('click', function (event) {
+                    timeLeft = 10000;
                     event.preventDefault();
                     const selectedAnswer = parseInt(this.getAttribute('data-answer'));
                     const modal = document.getElementById('feedbackModal');
