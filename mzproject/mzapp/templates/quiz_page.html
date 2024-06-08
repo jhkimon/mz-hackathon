@@ -15,37 +15,71 @@
         <div class="question">{{ quiz.quiz }}</div>
         <div class="answer-container">
             <div class="answer-wrapper">
-                <div class="answer">
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="1"
+                >
                     <div class="answer-num">A</div>
                     {{ quiz.op1 }}
-                </div>
-                <div class="answer">
+                </a>
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="2"
+                >
                     <div class="answer-num">B</div>
                     {{ quiz.op2 }}
-                </div>
+                </a>
             </div>
             <div class="answer-wrapper">
-                <div class="answer">
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="3"
+                >
                     <div class="answer-num">C</div>
                     {{ quiz.op3 }}
-                </div>
-                <div class="answer">
+                </a>
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="4"
+                >
                     <div class="answer-num">D</div>
                     {{ quiz.op4 }}
-                </div>
+                </a>
             </div>
         </div>
         {% if gimic %}
         <p>{{ gimic }}</p>
-        {% endif %} {% if next_quiz_id %}
-        <a class="next-question" id="next-question" href="{% url 'quiz_page' next_quiz_id %}">
-            <div class="next-question-button">다음 질문</div>
-        </a>
         {% endif %}
         <script>
             let timeLeft = 10000;
             const timerBar = document.getElementById('timer-bar');
             const timerText = document.getElementById('timer-text');
+            let nextUrl = "";
+
+            const correctAnswer = {{ quiz.answer }};
+
+            function incrementQCount() {
+                let qCount = localStorage.getItem('q_count');
+                qCount = qCount ? parseInt(qCount) + 1 : 1;
+                localStorage.setItem('q_count', qCount);
+            }
+
+            const answers = document.querySelectorAll('.answer');
+            answers.forEach(answer => {
+                answer.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const selectedAnswer = parseInt(this.getAttribute('data-answer'));
+                    if (selectedAnswer === correctAnswer) {
+                        incrementQCount();
+                    }
+                    nextUrl = this.href;
+                    window.location.href = this.href;
+                });
+            });
 
             const timerInterval = setInterval(() => {
                 timeLeft -= 10;
@@ -53,10 +87,11 @@
                 timerBar.style.width = percentageLeft + '%';
                 timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
 
-                // if (timeLeft <= -10) {
+                // if (timeLeft <= 0) {
                 //     clearInterval(timerInterval);
                 //     timerText.textContent = '0.000초';
                 //     alert('타이머 종료!');
+                //     window.location.href = nextUrl || document.querySelector('.answer').href;
                 // }
             }, 10);
         </script>
