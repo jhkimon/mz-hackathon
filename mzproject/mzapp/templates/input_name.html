@@ -9,28 +9,31 @@
     </head>
     <body>
         <div class="container">
-            <div class="title">
-                <h2>이름을 입력해주세요</h2>
-            </div>
+            <img src="{% static 'images/what-is-your-name.png' %}" />
             <input type="text" id="name" name="name" required />
-            <button type="button" id="submitBtn">다음</button>
-            <script>
-                window.onload = function () {
-                    localStorage.setItem('q_count', 0);
-                };
-                const nameInput = document.getElementById('name'); // 수정된 부분: 클래스명이 아닌 id를 사용
+            <button type="button" id="submitBtn">
+                <img src="{% static 'images/my-name.png' %}" />
+            </button>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                localStorage.setItem('q_count', 0);
+
+                const nameInput = document.getElementById('name');
                 const submitBtn = document.getElementById('submitBtn');
 
                 function setUsername() {
                     const name = nameInput.value;
                     if (name) {
-                        window.localStorage.setItem('username', name);
+                        localStorage.setItem('username', name);
                         window.location.href = '/quiz/1';
+                    } else {
+                        alert('이름을 입력해주세요.');
                     }
                 }
 
                 submitBtn.addEventListener('click', setUsername);
-            </script>
-        </div>
+            });
+        </script>
     </body>
 </html>
