@@ -40,22 +40,26 @@ def quiz_page(request, id):
 
     if add_gimic:
         gimic = random.choice(gimic_list)
+    
+    # 기믹에 따라 다른 템플릿 선택
+    if gimic == 'button_fadeout':
+        template_name = 'quiz_page_button_fadeout.html'
+    elif gimic == 'o_run':
+        template_name = 'quiz_page_o_run.html'
+    elif gimic == 'x_come':
+        template_name = 'quiz_page_x_come.html'
+    elif gimic == 'answer_hide':
+        template_name = 'quiz_page_answer_hide.html'
+    elif gimic == 'timer':
+        template_name = 'quiz_page_timer.html'
+    else:
+        template_name = 'quiz_page.html'  # 기본 템플릿
 
-    return render(request, 'quiz_page.html', {
+    return render(request, template_name, {
         'quiz': current_quiz,
         'gimic': gimic,
         'next_quiz_id': next_quiz_id,
     })
 
 def result_page(request):
-
-# 전역 기믹 리스트
-gimic_list = ['button_fadeout', 'o_run', 'x_come', 'answer_hide', 'timer']
-
-def main_page(request):
-    # 세션 초기화
-    request.session.flush()
-    return render(request, 'main_page.html')
-
-def input_name(request):
-    return render(request, 'input_name.html')
+    return render(request, 'result_page.html')
