@@ -5,46 +5,40 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Quiz Timer</title>
         {% load static %}
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="{% static 'quiz-page.css' %}"
-        />
+        <link rel="stylesheet" type="text/css" href="{% static 'quiz-page.css' %}" />
         <style>
             .timer-wrapper {
                 width: 80%;
                 height: 20px;
-
             }
             .timer-slider {
                 width: 100%;
                 appearance: none; /* removes browser-specific styling */
                 height: 25px; /* height of slider */
-                background: #FF5C35 ; /* orange background */
+                background: #ff5c35; /* orange background */
                 outline: none; /* remove outline */
                 border-radius: 50px; /* round corners */
             }
-            
+
             .timer-slider::-webkit-slider-thumb {
-              appearance: none; /* removes browser-specific styling */
-              width: 20px; /* handle width */
-              height: 20px; /* handle height */
-              border-radius: 50%; /* make it circular */
-              background: #FFFFFF; /* white color */
-              cursor: pointer; /* cursor on hover */
+                appearance: none; /* removes browser-specific styling */
+                width: 20px; /* handle width */
+                height: 20px; /* handle height */
+                border-radius: 50%; /* make it circular */
+                background: #ffffff; /* white color */
+                cursor: pointer; /* cursor on hover */
             }
         </style>
     </head>
     <body>
+        <div id="feedbackModal" class="modal" style="display: none">
+            <div class="modal-content">
+                <img id="feedbackImage" src="" alt="Feedback" />
+            </div>
+        </div>
+        <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
         <div class="timer-wrapper">
-            <input
-                type="range"
-                class="timer-slider"
-                id="timer-slider"
-                min="0"
-                max="10000"
-                value="10000"
-            />
+            <input type="range" class="timer-slider" id="timer-slider" min="0" max="10000" value="10000" />
             <div class="timer-text" id="timer-text">10.000초</div>
         </div>
         <div class="question">{{ quiz.quiz }}</div>
@@ -90,7 +84,7 @@
         <p>{{ gimic }}</p>
         {% endif %}
         <script>
- 
+
             let timeLeft = 10000;
             const timerText = document.getElementById("timer-text");
             const timerSlider = document.getElementById("timer-slider");
