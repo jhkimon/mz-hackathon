@@ -90,16 +90,31 @@
             }
 
             const answers = document.querySelectorAll('.answer');
-                answers.forEach(answer => {
-                    answer.addEventListener('click', function (event) {
-                        event.preventDefault();
-                        const selectedAnswer = parseInt(this.getAttribute('data-answer'));
-                        if (selectedAnswer === correctAnswer) {
-                            incrementQCount();
-                        }
-                        nextUrl = this.href;
-                        window.location.href = this.href;
-                    });
+            answers.forEach(answer => {
+                answer.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const selectedAnswer = parseInt(this.getAttribute('data-answer'));
+                    const modal = document.getElementById('feedbackModal');
+                    const modalImg = document.getElementById('feedbackImage');
+
+                    if (selectedAnswer === correctAnswer) {
+                        // 정답인 경우 동그라미 이미지 표시
+                        modalImg.src = "{% static 'images/good.png' %}";
+                        incrementQCount();
+                    } else {
+                        // 오답인 경우 엑스 이미지 표시
+                        modalImg.src = "{% static 'images/bad.png' %}";
+                    }
+
+                    // 모달 표시
+                    modal.style.display = "block";
+                    nextUrl = this.href;
+
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                        window.location.href = nextUrl;
+                    }, 2000);
+                });
             });
 
                 const container = document.querySelector("#container");

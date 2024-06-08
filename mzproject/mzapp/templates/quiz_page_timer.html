@@ -38,8 +38,8 @@
         </div>
         <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
         <div class="timer-wrapper">
-            <input type="range" class="timer-slider" id="timer-slider" min="0" max="10000" value="10000" />
-            <div class="timer-text" id="timer-text">10.000초</div>
+            <input type="range" class="timer-slider" id="timer-slider" min="0" max="7000" value="7000" />
+            <div class="timer-text" id="timer-text">7.000초</div>
         </div>
         <div class="question">{{ quiz.quiz }}</div>
         <div class="answer-container">
@@ -85,7 +85,7 @@
         {% endif %}
         <script>
 
-            let timeLeft = 10000;
+            let timeLeft = 7000;
             const timerText = document.getElementById("timer-text");
             const timerSlider = document.getElementById("timer-slider");
             let isDragging = false;
@@ -104,11 +104,26 @@
                 answer.addEventListener('click', function (event) {
                     event.preventDefault();
                     const selectedAnswer = parseInt(this.getAttribute('data-answer'));
+                    const modal = document.getElementById('feedbackModal');
+                    const modalImg = document.getElementById('feedbackImage');
+
                     if (selectedAnswer === correctAnswer) {
+                        // 정답인 경우 동그라미 이미지 표시
+                        modalImg.src = "{% static 'images/good.png' %}";
                         incrementQCount();
+                    } else {
+                        // 오답인 경우 엑스 이미지 표시
+                        modalImg.src = "{% static 'images/bad.png' %}";
                     }
+
+                    // 모달 표시
+                    modal.style.display = "block";
                     nextUrl = this.href;
-                    window.location.href = this.href;
+
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                        window.location.href = nextUrl;
+                    }, 2000);
                 });
             });
 
@@ -123,14 +138,28 @@
             }
 
             const timerInterval = setInterval(() => {
-                if (!isDragging) {
-                    timeLeft -= 10;
-                    if (timeLeft <= 0) {
-                        timeLeft = 0;
-                        clearInterval(timerInterval);
-                        alert("타이머 종료!");
-                    }
-                    updateTimerDisplay();
+                timeLeft -= 10;
+                const percentageLeft = (timeLeft / 7000) * 100;
+                timerSlider.value = timeLeft;
+                timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerText.textContent = '0.000초';
+                    alert('타이머 종료!');
+                    const modal = document.getElementById('feedbackModal');
+                    const modalImg = document.getElementById('feedbackImage');
+
+                    // 타이머 종료 시 엑스 이미지 표시
+                    modalImg.src = "{% static 'images/bad.png' %}";
+
+                    // 모달 표시
+                    modal.style.display = "block";
+
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                        window.location.href = nextUrl || document.querySelector('.answer').href;
+                    }, 2000);
                 }
             }, 10);
 
@@ -144,7 +173,7 @@
                 const rect = timerSlider.getBoundingClientRect();
                 const offsetX = e.clientX - rect.left;
                 const percentage = Math.max(0, Math.min(1, offsetX / rect.width));
-                updateTimeLeft(percentage * 10000);
+                updateTimeLeft(percentage * 7000);
             }
 
             function onMouseUp() {
