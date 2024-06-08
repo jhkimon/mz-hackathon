@@ -7,7 +7,6 @@ class Question(models.Model):
     op2 = models.TextField()  # 보기 2
     op3 = models.TextField()  # 보기 3
     op4 = models.TextField()  # 보기 4
-    op5 = models.TextField()  # 보기 5
     
     def __str__(self):
         return self.quiz

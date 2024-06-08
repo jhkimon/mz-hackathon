@@ -10,7 +10,30 @@
             type="text/css"
             href="{% static 'quiz-page.css' %}"
         />
-        <style></style>
+        <style>
+            .timer-wrapper {
+                width: 80%;
+                height: 20px;
+
+            }
+            .timer-slider {
+                width: 100%;
+                appearance: none; /* removes browser-specific styling */
+                height: 25px; /* height of slider */
+                background: #FF5C35 ; /* orange background */
+                outline: none; /* remove outline */
+                border-radius: 50px; /* round corners */
+            }
+            
+            .timer-slider::-webkit-slider-thumb {
+              appearance: none; /* removes browser-specific styling */
+              width: 20px; /* handle width */
+              height: 20px; /* handle height */
+              border-radius: 50%; /* make it circular */
+              background: #FFFFFF; /* white color */
+              cursor: pointer; /* cursor on hover */
+            }
+        </style>
     </head>
     <body>
         <div class="timer-wrapper">

@@ -4,7 +4,7 @@ from .models import Question
 import random
 
 # 전역 기믹 리스트
-gimic_list = ['button_fadeout', 'o_run', 'x_come', 'answer_hide', 'timer']
+gimic_list = ['button_fadeout', 'o_run', 'x_come', 'timer']
 
 def main_page(request):
     # 세션 초기화
@@ -49,8 +49,6 @@ def quiz_page(request, id):
         template_name = 'quiz_page_o_run.html'
     elif gimic == 'x_come':
         template_name = 'quiz_page_x_come.html'
-    elif gimic == 'answer_hide':
-        template_name = 'quiz_page_answer_hide.html'
     elif gimic == 'timer':
         template_name = 'quiz_page_timer.html'
     elif gimic == 'float_img':
