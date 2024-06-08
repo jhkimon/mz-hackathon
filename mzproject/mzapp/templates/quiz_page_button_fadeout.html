@@ -68,21 +68,23 @@
         <p>{{ gimic }}</p>
         {% endif %}
         <script>
+
             const container = document.querySelector("#container");
             const answerContainer = document.querySelector(".answer-container");
             const answers = document.querySelectorAll('.answer');
             const hideDistance = 300;
 
+
             {% if quiz.answer == 1 %}
-                const correctButton = document.querySelector('.answer[data-answer="1"]');
+                const correctBtn = document.querySelector('.answer[data-answer="1"]');
             {% elif quiz.answer == 2 %}
-                const correctButton = document.querySelector('.answer[data-answer="2"]');
+                const correctBtn = document.querySelector('.answer[data-answer="2"]');
             {% elif quiz.answer == 3 %}
-                const correctButton = document.querySelector('.answer[data-answer="3"]');
+                const correctBtn = document.querySelector('.answer[data-answer="3"]');
             {% elif quiz.answer == 4 %}
-                const correctButton = document.querySelector('.answer[data-answer="4"]');
+                const correctBtn = document.querySelector('.answer[data-answer="4"]');
             {% endif %}
-            const correctAnswer = {{ quiz.answer }};
+
 
             const answerD = document.createElement('a');
             answerD.classList.add('answer', 'sweep');
@@ -123,17 +125,18 @@
                     Math.pow(e.clientY - (answerRect.top + answerRect.height / 2), 2)
                 );
                 if (distance < hideDistance) {
-                    correctButton.style.opacity = 0;
-                    correctButton.style.visibility = 'hidden';
+                    correctBtn.style.opacity = 0;
+                    correctBtn.style.visibility = 'hidden';
                 } else {
-                    correctButton.style.opacity = 1;
-                    correctButton.style.visibility = 'visible';
+                    correctBtn.style.opacity = 1;
+                    correctBtn.style.visibility = 'visible';
                 }
             });
 
             let timeLeft = 10000;
             const timerBar = document.getElementById('timer-bar');
             const timerText = document.getElementById('timer-text');
+            const correctAnswer = {{ quiz.answer }};
             let nextUrl = "";
 
             function incrementQCount() {
@@ -167,6 +170,7 @@
                     window.location.href = nextUrl || document.querySelector('.answer').href;
                 }
             }, 10);
+
             setTimeout(function () {
                 var button = document.querySelector(".sweep");
                 button.style.left = "calc(100vw + 300px)";
