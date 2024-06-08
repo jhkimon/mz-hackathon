@@ -48,4 +48,14 @@ def quiz_page(request, id):
     })
 
 def result_page(request):
-    return render(request, 'result_page.html')
+
+# 전역 기믹 리스트
+gimic_list = ['button_fadeout', 'o_run', 'x_come', 'answer_hide', 'timer']
+
+def main_page(request):
+    # 세션 초기화
+    request.session.flush()
+    return render(request, 'main_page.html')
+
+def input_name(request):
+    return render(request, 'input_name.html')
