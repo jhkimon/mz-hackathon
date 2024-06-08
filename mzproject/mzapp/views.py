@@ -33,6 +33,8 @@ def quiz_page(request, id):
     except Question.DoesNotExist:
         raise Http404("Quiz does not exist")
 
+    next_quiz_id = id + 1 if id < 10 else None
+
     gimic = None
     add_gimic = id > 5 and id-1 in gimic_indices  # 6번째 퀴즈부터 기믹 추가 여부 결정
 
@@ -42,16 +44,8 @@ def quiz_page(request, id):
     return render(request, 'quiz_page.html', {
         'quiz': current_quiz,
         'gimic': gimic,
+        'next_quiz_id': next_quiz_id,
     })
 
 def result_page(request):
-    
     return render(request, 'result_page.html')
-
-# Create your views here.
-
-def input_name(request):
-    return render(request, 'main_page.html')
-
-def main_page(request):
-    return render(request,'main_page.html')
