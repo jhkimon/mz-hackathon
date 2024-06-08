@@ -4,8 +4,8 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>MZ 신조어 만들기</title>
-        {%load static%}
-        <link rel="stylesheet" type="text/css" href="{%static 'main-page.css'%}" />
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'main-page.css' %}" />
         <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css" />
@@ -14,6 +14,6 @@
         <div class="title-wrapper">
             <div class="title">MZ 신조어 게임</div>
         </div>
-        <button>시작하기</button>
+        <a href="{% url 'input_name' %}" class="start">시작하기</a>
     </body>
 </html>
