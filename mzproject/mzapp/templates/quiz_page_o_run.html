@@ -13,6 +13,12 @@
         }
     </style>
     <body id="container">
+        <div id="feedbackModal" class="modal" style="display: none">
+            <div class="modal-content">
+                <img id="feedbackImage" src="" alt="Feedback" />
+            </div>
+        </div>
+        <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
         <div class="timer-wrapper">
             <div class="timer" id="timer-bar"></div>
             <div class="timer-text" id="timer-text">10.000초</div>
@@ -107,7 +113,7 @@
                     Math.pow(e.clientY - (answerRect.top + answerRect.height / 2), 2)
                 );
                 if (distance < hideDistance) {
-                    correctButton.style.transform = "scale(0.01)";
+                    correctButton.style.transform = "scale(0.05)";
                 } else {
                     correctButton.style.transform = "scale(1)";
                 }
@@ -119,7 +125,7 @@
                             timerBar.style.width = percentageLeft + '%';
                             timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
 
-                            if (timeLeft <= 0) {
+                            if (timeLeft <= -10) {
                                 clearInterval(timerInterval);
                                 timerText.textContent = '0.000초';
                                 alert('타이머 종료!');

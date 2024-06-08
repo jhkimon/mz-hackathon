@@ -8,6 +8,11 @@
         <link rel="stylesheet" type="text/css" href="{% static 'quiz-page.css' %}" />
     </head>
     <body>
+        <div id="feedbackModal" class="modal" style="display: none">
+            <div class="modal-content">
+                <img id="feedbackImage" src="" alt="Feedback" />
+            </div>
+        </div>
         <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
         <div class="timer-wrapper">
             <div class="timer" id="timer-bar"></div>
@@ -84,11 +89,26 @@
                 answer.addEventListener('click', function (event) {
                     event.preventDefault();
                     const selectedAnswer = parseInt(this.getAttribute('data-answer'));
+                    const modal = document.getElementById('feedbackModal');
+                    const modalImg = document.getElementById('feedbackImage');
+
                     if (selectedAnswer === correctAnswer) {
+                        // 정답인 경우 동그라미 이미지 표시
+                        modalImg.src = "{% static 'images/good.png' %}";
                         incrementQCount();
+                    } else {
+                        // 오답인 경우 엑스 이미지 표시
+                        modalImg.src = "{% static 'images/bad.png' %}";
                     }
+
+                    // 모달 표시
+                    modal.style.display = "block";
                     nextUrl = this.href;
-                    window.location.href = this.href;
+
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                        window.location.href = nextUrl;
+                    }, 2000);
                 });
             });
 

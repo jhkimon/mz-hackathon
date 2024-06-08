@@ -20,6 +20,26 @@ a {
     width: 100%;
 }
 
+/* 모달 스타일 */
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.5); /* 배경을 어둡게 해서 모달을 더 강조 */
+}
+
+.modal-content {
+    position: fixed;
+    top: 30vh;
+    right: 30vh;
+    left: 30vh;
+}
 /* Timer */
 .timer-wrapper {
     width: 80%;

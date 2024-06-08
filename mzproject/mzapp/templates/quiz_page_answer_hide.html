@@ -52,6 +52,12 @@
         </style>
     </head>
     <body>
+        <div id="feedbackModal" class="modal" style="display: none">
+            <div class="modal-content">
+                <img id="feedbackImage" src="" alt="Feedback" />
+            </div>
+        </div>
+        <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
         <div class="timer-wrapper">
             <div class="timer" id="timer-bar"></div>
             <div class="timer-text" id="timer-text">10.000초</div>
