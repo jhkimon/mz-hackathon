@@ -24,9 +24,11 @@ def quiz_page(request, id):
         selected_quizzes = random.sample(all_quizzes, 10)
         request.session['selected_quizzes'] = [quiz.id for quiz in selected_quizzes]
         request.session['gimic_indices'] = random.sample(range(5, 10), 3)  # 기믹을 추가할 인덱스 선택
+        request.session['used_gimics'] = []  # 사용된 기믹을 추적
 
     selected_quizzes = request.session['selected_quizzes']
     gimic_indices = request.session['gimic_indices']
+    used_gimics = request.session['used_gimics']
 
     try:
         current_quiz = Question.objects.get(id=selected_quizzes[id-1])
@@ -39,9 +41,16 @@ def quiz_page(request, id):
     add_gimic = id > 5 and id-1 in gimic_indices  # 6번째 퀴즈부터 기믹 추가 여부 결정
 
     if add_gimic:
-        gimic = random.choice(gimic_list)
+        available_gimics = [g for g in gimic_list if g not in used_gimics]
+        if available_gimics:
+            gimic = random.choice(available_gimics)
+            used_gimics.append(gimic)
     elif id == 3:
         gimic = 'float_img'
+
+    # 세션에 사용된 기믹 업데이트
+    request.session['used_gimics'] = used_gimics
+
     # 기믹에 따라 다른 템플릿 선택
     if gimic == 'button_fadeout':
         template_name = 'quiz_page_button_fadeout.html'
