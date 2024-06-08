@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quiz Timer</title>
+        {% load static %}
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'quiz-page.css' %}"
+        />
+        <style></style>
+    </head>
+    <body>
+        <div class="timer-wrapper">
+            <input
+                type="range"
+                class="timer-slider"
+                id="timer-slider"
+                min="0"
+                max="10000"
+                value="10000"
+            />
+            <div class="timer-text" id="timer-text">10.000초</div>
+        </div>
+        <div class="question">{{ quiz.quiz }}</div>
+        <div class="answer-container">
+            <div class="answer-wrapper">
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="1"
+                >
+                    <div class="answer-num">A</div>
+                    {{ quiz.op1 }}
+                </a>
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="2"
+                >
+                    <div class="answer-num">B</div>
+                    {{ quiz.op2 }}
+                </a>
+            </div>
+            <div class="answer-wrapper">
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="3"
+                >
+                    <div class="answer-num">C</div>
+                    {{ quiz.op3 }}
+                </a>
+                <a
+                    class="answer"
+                    href="{% if next_quiz_id %}{% url 'quiz_page' next_quiz_id %}{% else %}{% url 'result_page' %}{% endif %}"
+                    data-answer="4"
+                >
+                    <div class="answer-num">D</div>
+                    {{ quiz.op4 }}
+                </a>
+            </div>
+        </div>
+        {% if gimic %}
+        <p>{{ gimic }}</p>
+        {% endif %}
+        <script>
+ 
+            let timeLeft = 10000;
+            const timerText = document.getElementById("timer-text");
+            const timerSlider = document.getElementById("timer-slider");
+            let isDragging = false;
+            let nextUrl = "";
+
+            const correctAnswer = {{ quiz.answer }};
+
+            function incrementQCount() {
+                let qCount = localStorage.getItem('q_count');
+                qCount = qCount ? parseInt(qCount) + 1 : 1;
+                localStorage.setItem('q_count', qCount);
+            }
+
+            const answers = document.querySelectorAll('.answer');
+            answers.forEach(answer => {
+                answer.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const selectedAnswer = parseInt(this.getAttribute('data-answer'));
+                    if (selectedAnswer === correctAnswer) {
+                        incrementQCount();
+                    }
+                    nextUrl = this.href;
+                    window.location.href = this.href;
+                });
+            });
+
+            function updateTimerDisplay() {
+                timerText.textContent = (timeLeft / 1000).toFixed(3) + "초";
+                timerSlider.value = timeLeft;
+            }
+
+            function updateTimeLeft(value) {
+                timeLeft = value;
+                updateTimerDisplay();
+            }
+
+            const timerInterval = setInterval(() => {
+                if (!isDragging) {
+                    timeLeft -= 10;
+                    if (timeLeft <= 0) {
+                        timeLeft = 0;
+                        clearInterval(timerInterval);
+                        alert("타이머 종료!");
+                    }
+                    updateTimerDisplay();
+                }
+            }, 10);
+
+            timerSlider.addEventListener("mousedown", () => {
+                isDragging = true;
+                document.addEventListener("mousemove", onMouseMove);
+                document.addEventListener("mouseup", onMouseUp);
+            });
+
+            function onMouseMove(e) {
+                const rect = timerSlider.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const percentage = Math.max(0, Math.min(1, offsetX / rect.width));
+                updateTimeLeft(percentage * 10000);
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
+            }
+
+            updateTimerDisplay();
+        </script>
+    </body>
+</html>
