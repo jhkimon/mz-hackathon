@@ -13,6 +13,7 @@
                 <img id="feedbackImage" src="" alt="Feedback" />
             </div>
         </div>
+        <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
         <div class="timer-wrapper">
             <div class="timer" id="timer-bar"></div>
             <div class="timer-text" id="timer-text">15.000초</div>
@@ -69,10 +70,7 @@
             {% elif quiz.answer == 4 %}
                 const correctButton = document.querySelector('.answer[data-answer="4"]');
             {% endif %}
-            const answer = {{quiz.answer}};
-
-            const answerButtonId = `answer-${answer}`;
-            const answerButton = document.getElementById(answerButtonId);
+            const correctAnswer = {{quiz.answer}};
 
             const answers = document.querySelectorAll('.answer');
             answers.forEach(answer => {
@@ -85,7 +83,6 @@
                     if (selectedAnswer === correctAnswer) {
                         // 정답인 경우 동그라미 이미지 표시
                         modalImg.src = "{% static 'images/good.png' %}";
-                        incrementQCount();
                     } else {
                         // 오답인 경우 엑스 이미지 표시
                         modalImg.src = "{% static 'images/bad.png' %}";
@@ -93,7 +90,7 @@
 
                     // 모달 표시
                     modal.style.display = "block";
-                    nextUrl = this.href;
+                    const nextUrl = this.href;
 
                     setTimeout(() => {
                         modal.style.display = "none";
@@ -103,11 +100,16 @@
             });
 
             const otherButtons = Array.from(document.querySelectorAll('.answer')).filter(
-                (btn) => btn.getAttribute('data-answer') !== answer.toString()
+                (btn) => btn.getAttribute('data-answer') !== correctAnswer.toString()
             );
 
             setTimeout(() => {
                 const randomButton = otherButtons[Math.floor(Math.random() * otherButtons.length)];
+
+                // Set explicit width and height before changing position
+                const computedStyle = window.getComputedStyle(randomButton);
+                randomButton.style.width = computedStyle.width;
+                randomButton.style.height = computedStyle.height;
 
                 document.addEventListener('mousemove', function (e) {
                     const mouseX = e.clientX;
@@ -121,12 +123,15 @@
                     randomButton.style.top = `${mouseY - buttonHeight / 2}px`;
                     randomButton.style.transition = 'all 0.3s ease';
                 });
-            }, 2000); // 2초 후에 실행합니다.
+            }, 1000);
+
             let timeLeft = 15000;
+            const timerBar = document.getElementById('timer-bar');
+            const timerText = document.getElementById('timer-text');
 
             const timerInterval = setInterval(() => {
                 timeLeft -= 10;
-                const percentageLeft = (timeLeft / 10000) * 100;
+                const percentageLeft = (timeLeft / 15000) * 100;
                 timerBar.style.width = percentageLeft + '%';
                 timerText.textContent = (timeLeft / 1000).toFixed(3) + '초';
 
@@ -134,7 +139,7 @@
                     clearInterval(timerInterval);
                     timerText.textContent = '0.000초';
                     alert('타이머 종료!');
-                    window.location.href = nextUrl || document.querySelector('.answer').href;
+                    window.location.href = document.querySelector('.answer').href;
                 }
             }, 10);
         </script>

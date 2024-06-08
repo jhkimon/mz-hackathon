@@ -11,14 +11,8 @@
         <div class="container">
             <img class="quiz-banner" src="{% static 'images/quiz-banner.png' %}" />
             <h1>퀴즈 결과</h1>
-            <div class="result-image">
-                ƒ {% if q_count >= 9 %}
-                <img src="{% static '/images/result1.png' %}" alt="첫 번째 이미지" />
-                {% elif q_count >= 6 %}
-                <img src="{% static '/images/result2.png' %}" alt="두 번째 이미지" />
-                {% else %}
-                <img src="{% static '/images/result3.png' %}" alt="세 번째 이미지" />
-                {% endif %}
+            <div class="result-image" id="resultImageContainer">
+                <!-- Image will be inserted here by JavaScript -->
             </div>
             <div class="result">
                 <p id="resultText"></p>
@@ -31,12 +25,36 @@
         </div>
         <script>
             window.onload = function () {
-                // localStorage에서 사용자 이름 가져오기
+                // localStorage에서 사용자 이름과 q_count 가져오기
                 const name = localStorage.getItem('username');
-                const q_count = localStorage.getItem('q_count');
+                const q_count = parseInt(localStorage.getItem('q_count'));
 
                 // 가져온 정보를 HTML에 적용
-                document.getElementById('resultText').innerText = `${name}, 너가 맞춘 개수 ${q_count} 개야~ `;
+                document.getElementById('resultText').innerText = `${name}, 너가 맞춘 개수 ${q_count} 개야~`;
+
+                const resultImageContainer = document.getElementById('resultImageContainer');
+                let resultImage = '';
+                let resultAudio = '';
+
+                if (q_count >= 9) {
+                    resultImage = "{% static 'images/result1.png' %}";
+                    resultAudio = "{% static 'audio/result1.mp3' %}";
+                } else if (q_count >= 6) {
+                    resultImage = "{% static 'images/result2.png' %}";
+                    resultAudio = "{% static 'audio/result2.mp3' %}";
+                } else {
+                    resultImage = "{% static 'images/result3.png' %}";
+                    resultAudio = "{% static 'audio/result3.mp3' %}";
+                }
+
+                resultImageContainer.innerHTML = `<img src="${resultImage}" alt="결과 이미지" id="resultImage" />`;
+
+                const resultImageElement = document.getElementById('resultImage');
+                const audio = new Audio(resultAudio);
+
+                resultImageElement.addEventListener('click', function () {
+                    audio.play();
+                });
 
                 document.getElementById('restartBtn').addEventListener('click', function () {
                     window.location.href = '/input-name/';

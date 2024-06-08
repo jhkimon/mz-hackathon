@@ -17,8 +17,14 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
     text-align: center;
+    position: relative;
+    top: -20px;
+}
+
+.people {
+    font-size: 2.5rem;
+    margin: 1%;
 }
 
 input {

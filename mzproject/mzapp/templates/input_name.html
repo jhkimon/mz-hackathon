@@ -9,6 +9,7 @@
     </head>
     <body>
         <div class="container">
+            <div class="people">지금까지 {{user_count}}명이 플레이했습니다.</div>
             <img src="{% static 'images/what-is-your-name.png' %}" />
             <input type="text" id="name" name="name" required />
             <button type="button" id="submitBtn">
@@ -26,7 +27,7 @@
                     const name = nameInput.value;
                     if (name) {
                         localStorage.setItem('username', name);
-                        window.location.href = '/quiz/1';
+                        window.location.href = '/description';
                     } else {
                         alert('이름을 입력해주세요.');
                     }

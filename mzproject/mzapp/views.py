@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
-from .models import Question
+from .models import Question, UserCount
 import random
 
 # 전역 기믹 리스트
@@ -12,7 +12,10 @@ def main_page(request):
     return render(request, 'main_page.html')
 
 def input_name(request):
-    return render(request, 'input_name.html')
+    user_count_obj, created = UserCount.objects.get_or_create(id= 1)
+    user_count_obj.id += 1
+    user_count_obj.save()
+    return render(request, 'input_name.html', {'user_count': user_count_obj.id})
 
 def quiz_page(request, id):
     if id > 10:
@@ -64,3 +67,6 @@ def quiz_page(request, id):
 
 def result_page(request):
     return render(request, 'result_page.html')
+
+def description_page(request):
+    return render(request, 'description_page.html')

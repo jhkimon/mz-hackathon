@@ -28,3 +28,6 @@ class Reward(models.Model):
     
     def __str__(self):
         return self.name
+
+class UserCount(models.Model):
+    user_count = models.IntegerField(default=1)
