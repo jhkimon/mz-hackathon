@@ -1,36 +1,16 @@
 <p align="center">
-  <a href="https://codesandbox.io">
-    <img src="https://codesandbox.io/static/img/banner.png?v=2" height="300px">
-  </a>
+<img width="1770" alt="image" src="https://github.com/jhkimon/mz-hackathon/assets/113989454/5dbada37-605f-473c-b47d-c2f9dabd9e76">
 </p>
 
-&nbsp;
+## MZ세대를 겨냥한 어딘가 이상한 신조어 퀴즈 🌟
 
-An instantly ready, full-featured online IDE for web development on any device
-with a browser. Enabling you to start new projects quickly and prototype
-rapidly. With CodeSandbox, you can create web apps, experiment with code, test
-ideas, and share creations easily.
+- NEXT 해커톤 (2024.06.08 ~ 2024.06.09)
+- 오전 10시부터 오전 10시까지 진행한 NEXT 최초의 해커톤
 
-## Other CodeSandbox repositories
+## NEXT 해커톤 (2024.06.08 ~ 2024.06.09)
 
-CodeSandbox consists of several separate servers, some of which are open
-sourced.
-
-- Client: the web application
-- Server: the [Phoenix](https://github.com/phoenixframework/phoenix) API server
-- Nginx: Nginx config files
-- [Git Extractor](https://github.com/codesandbox/codesandbox-importers):
-  responsible for extracting the source from a GitHub repository
-- [CLI](https://github.com/codesandbox/codesandbox-importers/tree/master/packages/cli):
-  the CLI to upload a CodeSandbox project from your command line
-
-## Documentation
-
-You can find our documentation on our
-[website](https://codesandbox.io/docs/learn/introduction/overview)
 
 ## Contributors ✨
-
 
 
 <table>
@@ -45,9 +25,4 @@ You can find our documentation on our
 </table>
 
 
-## Thanks
-
-<a href="https://www.chromaticqa.com/"><img src="https://cdn-images-1.medium.com/letterbox/147/36/50/50/1*oHHjTjInDOBxIuYHDY2gFA.png?source=logoAvatar-d7276495b101---37816ec27d7a" width="120"/></a>
-
-Thanks to [Chromatic](https://www.chromaticqa.com/) for providing the visual
-testing platform that helps us catch unexpected changes.
+**Thanks to NEXT🚀**
