@@ -9,7 +9,9 @@
 
 ## NEXT 해커톤 (2024.06.08 ~ 2024.06.09)
 
+- 주요화면 및 기능
 
+  
 ## Contributors ✨
 
 
@@ -24,5 +26,4 @@
   </tbody>
 </table>
 
-
-**Thanks to NEXT🚀**
+*Thanks to <span style="font-size: 20px;">**NE**<span style="color: orange;">**X**</span>**T🚀**</span>*
